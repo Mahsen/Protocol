@@ -1,3 +1,5 @@
+#ifndef CTATUS_HPP
+#define CTATUS_HPP
 /************************************************** Description *******************************************************/
 /*
     File : Status.hpp
@@ -39,32 +41,28 @@
 /* All object to return their status need this object */
 class Status {
 
-    public:
-
-        /* All possible messages */
-        enum class Message {
-            Success,
-            Fault,
-            Fault_Media
-        };
-
-        /* Set current message from outside */
-        void SetMessage(Message _Message) {
-            this->_Message = _Message;
-        }
-
-        /* Set current message */
-        Message GetMessage() {
-            return _Message;
-        }
-
-        /* Show current message on console */
-        virtual void ShowMessage() = 0;
-
     private:
 
         /* The variable holding the current message */
-        Message _Message;
+        int _Message;
+
+    public:
+
+        Status() : _Message(0) {};
+
+        /* Set current message from outside */
+        void SetMessage(int Message) {
+            this->_Message = Message;
+        }
+
+        /* Set current message */
+        int GetMessage() {        
+            return this->_Message;
+        }
+
+        /* Show current message on console */
+        //virtual void ShowMessage() = 0;
+
 };
 /************************************************** Functions *********************************************************/
 /*
@@ -79,3 +77,4 @@ class Status {
     Nothing
 */
 /**********************************************************************************************************************/
+#endif

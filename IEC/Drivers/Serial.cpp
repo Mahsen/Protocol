@@ -1,12 +1,10 @@
-#ifndef MEDIA_HPP
-#define MEDIA_HPP
 /************************************************** Description *******************************************************/
 /*
-    File : Media.hpp
+    File : Serial.cpp
     Programmer : Mohammad Lotfi
-    Used : Use header
+    Used : Send & Receive from com port
     Design Pattern : Nothing
-    Types of memory : Nothing
+    Types of memory : Heap & Stack
     Total Tread : Nothing
     Site : https://www.mahsen.ir
     Tel : +989124662703
@@ -22,7 +20,7 @@
     Nothing
 */
 /************************************************** Includes **********************************************************/
-#include "Status.hpp"
+#include "Serial.hpp"
 #include "iostream"
 /************************************************** Defineds **********************************************************/
 /*
@@ -32,22 +30,33 @@
 /* Using std */
 using namespace std;
 /************************************************** Variables *********************************************************/
-/*
-    Nothing
-*/
+Serial *Serial::Instance = nullptr;
 /************************************************** Opjects ***********************************************************/
-/* Media is interface with virtual functions to use other media for example (UART,LAN,RS485,USB,...) and all things that follows this structure */
-class Media {    
-    public: 
-        /* This function for send data*/
-        virtual Status* Send(string Message, uint32_t Length) = 0;
-        /* This function for receive data*/
-        virtual Status* Receive(string *Message, uint32_t *Length) = 0;
-};
-/************************************************** Functions *********************************************************/
 /*
     Nothing
 */
+/************************************************** Functions *********************************************************/
+/* This function rewrite media function for body of send*/
+Status* Serial::Send(string Message, uint32_t Length) {
+    status.SetMessage(Serial::Message::Fault);
+
+    /* This line represents everything in this section */
+    cout << "Serial : Send()" << endl;
+    status.SetMessage(Serial::Message::Success);
+
+    return &status;
+}
+/*--------------------------------------------------------------------------------------------------------------------*/
+/* This function rewrite media function for body of receive*/
+Status* Serial::Receive(string *Message, uint32_t *Length) {
+    status.SetMessage(Serial::Message::Fault);    
+
+    /* This line represents everything in this section */
+    cout << "Serial : Receive()" << endl;
+    status.SetMessage(Serial::Message::Success);
+
+    return &status;
+}
 /************************************************** Tasks *************************************************************/
 /*
     Nothing
@@ -57,4 +66,3 @@ class Media {
     Nothing
 */
 /**********************************************************************************************************************/
-#endif

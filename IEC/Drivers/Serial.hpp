@@ -1,12 +1,12 @@
-#ifndef MEDIA_HPP
-#define MEDIA_HPP
+#ifndef SERIAL_HPP
+#define SERIAL_HPP
 /************************************************** Description *******************************************************/
 /*
-    File : Media.hpp
+    File : Serial.hpp
     Programmer : Mohammad Lotfi
-    Used : Use header
+    Used : Using
     Design Pattern : Nothing
-    Types of memory : Nothing
+    Types of memory : Heap & Stack
     Total Tread : Nothing
     Site : https://www.mahsen.ir
     Tel : +989124662703
@@ -22,27 +22,59 @@
     Nothing
 */
 /************************************************** Includes **********************************************************/
-#include "Status.hpp"
-#include "iostream"
+#include "../Interface/Media.hpp"
+#include "../Interface/Status.hpp"
 /************************************************** Defineds **********************************************************/
 /*
     Nothing
 */
 /************************************************** Names *************************************************************/
-/* Using std */
-using namespace std;
+/*
+    Nothing
+*/
 /************************************************** Variables *********************************************************/
 /*
     Nothing
 */
 /************************************************** Opjects ***********************************************************/
-/* Media is interface with virtual functions to use other media for example (UART,LAN,RS485,USB,...) and all things that follows this structure */
-class Media {    
+/*
+    Nothing
+*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+/* Sample of media to useing RS485 (the RS485 is media with specific voltage levels used in industry) */
+class Serial : public Media {    
+    private: 
+
+        /* Instance for single use */
+        static Serial *Instance;
+        Serial() {};
+        Status status;
+        /* All message explanations */
+        const string Message2String[3] = {"Success", "Fault", "Fault_Media"};
+
     public: 
-        /* This function for send data*/
-        virtual Status* Send(string Message, uint32_t Length) = 0;
-        /* This function for receive data*/
-        virtual Status* Receive(string *Message, uint32_t *Length) = 0;
+        /* All possible messages */
+        enum class Message {
+            Success,
+            Fault,
+            Fault_Media
+        };
+
+        /* Show current message on console */
+        void ShowMessage() {
+            cout << "Message : " << Message2String[(int)status.GetMessage()] << endl;
+        }
+
+        static Serial *getInstance() {
+            if(Instance == nullptr) {
+                Instance = new Serial();
+            }
+
+            return Instance;
+        }
+
+        Status* Send(string Message, uint32_t Length) override;
+        Status* Receive(string *Message, uint32_t *Length) override;
 };
 /************************************************** Functions *********************************************************/
 /*
