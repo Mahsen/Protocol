@@ -1,3 +1,5 @@
+#ifndef IEC_HPP
+#define IEC_HPP
 /************************************************** Description *******************************************************/
 /*
     File : IEC.hpp
@@ -22,8 +24,6 @@
 /************************************************** Includes **********************************************************/
 /* String of everything head */
 #include <string.h>
-/* Vector of everything head */
-#include "vector"
 #include "../Interface/Media.hpp"
 #include "../Interface/Status.hpp"
 #include "../Interface/State.hpp"
@@ -101,3 +101,4 @@ class ClientIEC : private IEC {
     Nothing
 */
 /**********************************************************************************************************************/
+#endif
