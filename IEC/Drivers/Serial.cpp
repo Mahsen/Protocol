@@ -63,6 +63,8 @@ bool Serial::Open() {
     comTimeOut.ReadIntervalTimeout = 1;
     comTimeOut.ReadTotalTimeoutMultiplier = 1;
     comTimeOut.ReadTotalTimeoutConstant = 1;
+    comTimeOut.WriteTotalTimeoutConstant = 0;
+    comTimeOut.WriteTotalTimeoutMultiplier = 0;
     SetCommTimeouts(_Port, &comTimeOut);
 
     SetCommMask(_Port, EV_RXCHAR);
@@ -111,7 +113,7 @@ bool Serial::Send(uint8_t *Message, uint32_t Length) {
     }
 
     DWORD byteswritten;
-    WriteFile(_Port, (PCVOID)Message, 1, &byteswritten, NULL);
+    WriteFile(_Port, (PCVOID)Message, Length, &byteswritten, NULL);
 
     if(byteswritten != Length) {
         status.Set(Messages::Fault_Send);
