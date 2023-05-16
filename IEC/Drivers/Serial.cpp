@@ -38,22 +38,22 @@ Serial *Serial::Instance = nullptr;
 /************************************************** Functions *********************************************************/
 /* This function rewrite media function for body of send*/
 Status* Serial::Send(string Message, uint32_t Length) {
-    status.SetMessage(Serial::Message::Fault);
+    status.SetMessage((int)Serial::Message::Fault);
 
     /* This line represents everything in this section */
     cout << "Serial : Send()" << endl;
-    status.SetMessage(Serial::Message::Success);
+    status.SetMessage((int)Serial::Message::Success);
 
     return &status;
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* This function rewrite media function for body of receive*/
 Status* Serial::Receive(string *Message, uint32_t *Length) {
-    status.SetMessage(Serial::Message::Fault);    
+    status.SetMessage((int)Serial::Message::Fault);    
 
     /* This line represents everything in this section */
     cout << "Serial : Receive()" << endl;
-    status.SetMessage(Serial::Message::Success);
+    status.SetMessage((int)Serial::Message::Success);
 
     return &status;
 }

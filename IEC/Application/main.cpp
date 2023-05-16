@@ -40,9 +40,9 @@ using namespace std;
 /************************************************** Functions *********************************************************/
 int main() {
 
-    //Serial *_Serial = Serial::getInstance();
+    Serial *_Serial = Serial::getInstance();
 
-    //_Serial->Send("123", 3);
+    _Serial->Send("123", 3);
 
     cout << "Start." << endl;
     return 0;
