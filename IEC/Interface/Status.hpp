@@ -39,24 +39,23 @@
 */
 /************************************************** Opjects ***********************************************************/
 /* All object to return their status need this object */
+template <typename T_Message = int>
 class Status {
 
     private:
 
         /* The variable holding the current message */
-        int _Message;
+        T_Message _Message;
 
     public:
-
-        Status() : _Message(0) {};
-
+    
         /* Set current message from outside */
-        void SetMessage(int Message) {
+        void Set(T_Message Message) {
             this->_Message = Message;
         }
 
         /* Set current message */
-        int GetMessage() {        
+        T_Message Get() {        
             return this->_Message;
         }
 

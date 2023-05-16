@@ -38,11 +38,18 @@ using namespace std;
 /************************************************** Opjects ***********************************************************/
 /* Media is interface with virtual functions to use other media for example (UART,LAN,RS485,USB,...) and all things that follows this structure */
 class Media {    
+
     public: 
+        /* This function open media */
+        virtual bool Open() = 0;
+        /* This function set setting media */
+        virtual bool Update(uint32_t Speed) = 0;
         /* This function for send data*/
-        virtual Status* Send(string Message, uint32_t Length) = 0;
+        virtual bool Send(uint8_t *Message, uint32_t Length) = 0;
         /* This function for receive data*/
-        virtual Status* Receive(string *Message, uint32_t *Length) = 0;
+        virtual bool Receive(uint8_t *Message, uint32_t *Length) = 0;
+        /* This function close media */
+        virtual bool Close() = 0;
 };
 /************************************************** Functions *********************************************************/
 /*

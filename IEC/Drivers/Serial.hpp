@@ -24,6 +24,12 @@
 /************************************************** Includes **********************************************************/
 #include "../Interface/Media.hpp"
 #include "../Interface/Status.hpp"
+#include<iostream>
+#include<sstream>
+#include<fstream>
+#include<windows.h>
+#include<string>
+#include<thread>
 /************************************************** Defineds **********************************************************/
 /*
     Nothing
@@ -37,44 +43,44 @@
     Nothing
 */
 /************************************************** Opjects ***********************************************************/
-/*
-    Nothing
-*/
-/*--------------------------------------------------------------------------------------------------------------------*/
 /* Sample of media to useing RS485 (the RS485 is media with specific voltage levels used in industry) */
 class Serial : public Media {    
     private: 
 
         /* Instance for single use */
-        static Serial *Instance;
-        Serial() {};
-        Status status;
-        /* All message explanations */
-        const string Message2String[3] = {"Success", "Fault", "Fault_Media"};
+        static Serial *_Instance;
+        HANDLE _Port;
+        Serial() {
+            _Port = nullptr;
+            _Instance = nullptr; 
+        }       
 
     public: 
+
         /* All possible messages */
-        enum class Message {
+        enum class Messages {
             Success,
             Fault,
-            Fault_Media
+            Fault_Find,
+            Fault_Update,
+            Fault_Send,
+            Fault_Receive
         };
-
-        /* Show current message on console */
-        void ShowMessage() {
-            cout << "Message : " << Message2String[(int)status.GetMessage()] << endl;
-        }
+        Status<Messages> status;        
 
         static Serial *getInstance() {
-            if(Instance == nullptr) {
-                Instance = new Serial();
+            if(_Instance == nullptr) {
+                _Instance = new Serial();
             }
 
-            return Instance;
+            return _Instance;
         }
 
-        Status* Send(string Message, uint32_t Length) override;
-        Status* Receive(string *Message, uint32_t *Length) override;
+        bool Open() override;
+        bool Update(uint32_t Speed) override;
+        bool Send(uint8_t *Message, uint32_t Length) override;
+        bool Receive(uint8_t *Message, uint32_t *Length) override;
+        bool Close() override;
 };
 /************************************************** Functions *********************************************************/
 /*
