@@ -23,6 +23,7 @@
 #include "Serial.hpp"
 /************************************************** Defineds **********************************************************/
 #define SERIAL_COM_PORT_NAME "\\\\.\\COM9"
+#define SERIAL_TIMEOUT_REQUEST 10000 //ms
 /************************************************** Names *************************************************************/
 /* Using std */
 using namespace std;
@@ -62,7 +63,7 @@ bool Serial::Open() {
     GetCommTimeouts(_Port, &comTimeOut);
     comTimeOut.ReadIntervalTimeout = 1;
     comTimeOut.ReadTotalTimeoutMultiplier = 1;
-    comTimeOut.ReadTotalTimeoutConstant = 1;
+    comTimeOut.ReadTotalTimeoutConstant = 0;
     comTimeOut.WriteTotalTimeoutConstant = 0;
     comTimeOut.WriteTotalTimeoutMultiplier = 0;
     SetCommTimeouts(_Port, &comTimeOut);
@@ -134,21 +135,32 @@ bool Serial::Receive(uint8_t *Message, uint32_t *Length) {
     }   
 
     DWORD   My_Status;
-    LPDWORD My_Length = 0;
-    *Length = 0;
-
+    DWORD My_Length = 0;
+    *Length = 0;    
     //WaitCommEvent(_Port, &My_Status, 0);
-    if(!ReadFile( _Port, (LPVOID)Message,  1024, My_Length, NULL)) {
-        status.Set(Messages::Fault_Receive);
-        return false;
+
+    uint32_t Length_Feed=*Length, TimeOut=(SERIAL_TIMEOUT_REQUEST/100);
+    while(TimeOut--) {
+        Length_Feed=*Length;
+        if(!ReadFile( _Port, (LPVOID)&Message[*Length],  100, &My_Length, NULL)) {
+            status.Set(Messages::Fault_Receive);
+            return false;
+        }    
+        *Length += My_Length;
+        if((Length_Feed == *Length) && (Length_Feed != 0)) {
+            break;
+        }
     }
     
-    if(My_Length) {
-        *Length = *My_Length;
+    if(*Length) {
+        status.Set(Messages::Success);
+        return true;
     }
-    status.Set(Messages::Success);
+    else {
+        status.Set(Messages::Fault_TimeOut);
+        return false;
+    }
 
-    return true;
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* This function close media */
@@ -160,7 +172,7 @@ bool Serial::Close() {
     }    
 
     CloseHandle(_Port);
-    _Port == nullptr;
+    _Port = nullptr;
 
     status.Set(Messages::Success);
 

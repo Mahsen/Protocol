@@ -9,7 +9,7 @@
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/13
+    Last Update : 2023/5/16
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -21,9 +21,10 @@
 */
 /************************************************** Includes **********************************************************/
 #include "IEC.hpp"
-#include "../Interface/Media.hpp"
 /************************************************** Defineds **********************************************************/
-#define IEC_TIMEOUT_REQUEST 10 //ms
+/*
+    Nothing
+*/
 /************************************************** Names *************************************************************/
 /*
     Nothing
@@ -37,7 +38,21 @@
     Nothing
 */
 /************************************************** Functions *********************************************************/
-Status<IEC::Messages>* IEC::Connect() {
+Status<IEC::Messages>* ClientIEC::SetAddress(char *Address) {
+    if(strcmp(Address, _Address) != 0) {
+            DisConnect();
+    }
+
+    strcpy(_Address, Address);
+
+    status.Set(Messages::Success);
+    return &status;
+}  
+/*--------------------------------------------------------------------------------------------------------------------*/
+Status<IEC::Messages>* ClientIEC::Connect() {
+
+    uint8_t Data[1024];
+    uint32_t Length=0;
 
     if(state.Get() == States::Connected) {
         status.Set(Messages::Success);
@@ -57,30 +72,53 @@ Status<IEC::Messages>* IEC::Connect() {
     state.Set(States::Inited);
 
     state.Set(States::Connecting);
-    _Media->Send((uint8_t*)"/?!\r\n", 5);
-    uint8_t Data[1024];
-    uint32_t Length=0, Length_Feed=0, TimeOut=0;
-    do {
-        Length_Feed = Length;
-        _Wait(IEC_TIMEOUT_REQUEST);
-        _Media->Receive(Data, &Length); 
-        TimeOut++;     
-    } while((Length != Length_Feed) && (TimeOut<10));
-    cout << Length << endl;
+    sprintf((char*)Data, "/?%s!\r\n", _Address);
+    _Media->Send(Data, strlen((char*)Data));
+
+    if(!_Media->Receive(&Data[Length], &Length)) {
+        if(DisConnect()->Get() == Messages::Success)
+        {
+            status.Set(Messages::Fault_TimeOut);
+        }
+        return &status;
+    } 
+
+    
     state.Set(States::Connected);
 
     status.Set(Messages::Success);
     return &status;
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
-Status<IEC::Messages>* IEC::DisConnect() {
+Status<IEC::Messages>* ClientIEC::Execute(char *Data, uint32_t Length) {
+    if(state.Get() != States::Connected) {
+        if(Connect()->Get() != Messages::Success) {
+            return &status;
+        }
+    }
+
+    state.Set(States::Executeing);
+    
+    cout << Data << endl;
+
+    state.Set(States::Connected);
+
+
+    status.Set(Messages::Success);
+    return &status;
+}
+/*--------------------------------------------------------------------------------------------------------------------*/
+Status<IEC::Messages>* ClientIEC::DisConnect() {
 
     if(state.Get() == States::DisConnected) {
         status.Set(Messages::Success);
         return &status;
     }
 
-    _Media->Send((uint8_t*)"exit\r\n", 6);
+    if(state.Get() == States::Connected) {
+        _Media->Send((uint8_t*)"exit\r\n", 6);
+    }
+
     state.Set(States::DisConnecting);
     if(!_Media->Close()) {
         status.Set(Messages::Fault_Media);

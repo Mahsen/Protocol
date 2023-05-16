@@ -1,8 +1,8 @@
-#ifndef SERIAL_HPP
-#define SERIAL_HPP
+#ifndef HANDLE_CLIENT_IEC_HPP
+#define HANDLE_CLIENT_IEC_HPP
 /************************************************** Description *******************************************************/
 /*
-    File : Serial.hpp
+    File : HandleClientIEC.hpp
     Programmer : Mohammad Lotfi
     Used : Using
     Design Pattern : Nothing
@@ -11,7 +11,7 @@
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/13
+    Last Update : 2023/5/16
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -22,14 +22,8 @@
     Nothing
 */
 /************************************************** Includes **********************************************************/
-#include "../Interface/Media.hpp"
-#include "../Interface/Status.hpp"
-#include<iostream>
-#include<sstream>
-#include<fstream>
-#include<windows.h>
-#include<string>
-#include<thread>
+/* Vector of everything head */
+#include "vector"
 /************************************************** Defineds **********************************************************/
 /*
     Nothing
@@ -43,47 +37,11 @@
     Nothing
 */
 /************************************************** Opjects ***********************************************************/
-/* Sample of media to useing RS485 (the RS485 is media with specific voltage levels used in industry) */
-class Serial : public Media {    
-    private: 
-
-        /* Instance for single use */
-        static Serial *_Instance;
-        HANDLE _Port;
-        Serial() {
-            _Port = nullptr;
-            _Instance = nullptr; 
-        }       
-
-    public: 
-
-        /* All possible messages */
-        enum class Messages {
-            Success,
-            Fault,
-            Fault_TimeOut,
-            Fault_Find,
-            Fault_Update,
-            Fault_Send,
-            Fault_Receive
-        };
-        Status<Messages> status;        
-
-        static Serial *getInstance() {
-            if(_Instance == nullptr) {
-                _Instance = new Serial();
-            }
-
-            return _Instance;
-        }
-
-        bool Open() override;
-        bool Update(uint32_t Speed) override;
-        bool Send(uint8_t *Message, uint32_t Length) override;
-        bool Receive(uint8_t *Message, uint32_t *Length) override;
-        bool Close() override;
-};
+/*
+    Nothing
+*/
 /************************************************** Functions *********************************************************/
+/*--------------------------------------------------------------------------------------------------------------------*/
 /*
     Nothing
 */

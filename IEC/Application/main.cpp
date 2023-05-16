@@ -48,13 +48,15 @@ int main() {
     cout << "Start ----------------------- " << endl;
 
     Serial *_Serial = Serial::getInstance();
-    IEC *_IEC = new IEC(_Serial, &Delay_ms);
-
-    _IEC->Connect();
-    _IEC->ShowStatus();
-
-    _IEC->DisConnect();
-    _IEC->ShowStatus();
+    ClientIEC *_ClientIEC = new ClientIEC(_Serial, &Delay_ms);
+    
+    //IEC::Messages::Fault;
+    _ClientIEC->SetAddress((char*)"01");
+    _ClientIEC->Connect();
+    _ClientIEC->Execute((char*)"11111", 5);
+    _ClientIEC->SetAddress((char*)"02");
+    _ClientIEC->Execute((char*)"22222", 5);
+    _ClientIEC->DisConnect();
 
     cout << "Finish ----------------------- " << endl;
 
