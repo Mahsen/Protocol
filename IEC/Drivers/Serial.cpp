@@ -2,14 +2,14 @@
 /*
     File : Serial.cpp
     Programmer : Mohammad Lotfi
-    Used : Send & Receive from com port
-    Design Pattern : Nothing
+    Used : Using send and receive to comport windows
+    Design Pattern : Singleton
     Types of memory : Heap & Stack
     Total Tread : Nothing
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/13
+    Last Update : 2023/5/17
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -22,7 +22,9 @@
 /************************************************** Includes **********************************************************/
 #include "Serial.hpp"
 /************************************************** Defineds **********************************************************/
+/* Define one of serial name */
 #define SERIAL_COM_PORT_NAME "\\\\.\\COM9"
+/* Define delay to receive data */
 #define SERIAL_TIMEOUT_REQUEST 10000 //ms
 /************************************************** Names *************************************************************/
 /* Using std */
@@ -42,7 +44,7 @@ bool Serial::Open() {
         return false;
     }
 
-    DWORD byteswritten;
+    /* Create serial port with read write abilites*/
     _Port = CreateFile(
         SERIAL_COM_PORT_NAME,
         GENERIC_READ | GENERIC_WRITE,
@@ -53,12 +55,14 @@ bool Serial::Open() {
         NULL
     );
 
+    /* If create was unsuccessful */
     if (_Port == INVALID_HANDLE_VALUE)
     {
         status.Set(Messages::Fault_Find);
         return false;
     }
 
+    /* Set time out and some configs of port */
     COMMTIMEOUTS comTimeOut;
     GetCommTimeouts(_Port, &comTimeOut);
     comTimeOut.ReadIntervalTimeout = 1;
@@ -84,12 +88,12 @@ bool Serial::Update(uint32_t Speed) {
     }
 
     DCB dcb;
-
     if (!GetCommState(_Port, &dcb)) {
         status.Set(Messages::Fault_Update);
         return false;
     }
 
+    /* Edit current setting of serial port */
     dcb.BaudRate = Speed;
     dcb.ByteSize = 7;
     dcb.Parity = EVENPARITY;
@@ -113,6 +117,7 @@ bool Serial::Send(uint8_t *Message, uint32_t Length) {
         return false;
     }
 
+    /* write to port mean send to serial port windows */
     DWORD byteswritten;
     WriteFile(_Port, (PCVOID)Message, Length, &byteswritten, NULL);
 
@@ -137,8 +142,8 @@ bool Serial::Receive(uint8_t *Message, uint32_t *Length) {
     DWORD   My_Status;
     DWORD My_Length = 0;
     *Length = 0;    
-    //WaitCommEvent(_Port, &My_Status, 0);
 
+    /* Algoritm to receive complete data from serial port */
     uint32_t Length_Feed=*Length, TimeOut=(SERIAL_TIMEOUT_REQUEST/100);
     while(TimeOut--) {
         Length_Feed=*Length;
@@ -171,6 +176,7 @@ bool Serial::Close() {
         return false;
     }    
 
+    /* To  close and clear variable connection serial port windows */
     CloseHandle(_Port);
     _Port = nullptr;
 

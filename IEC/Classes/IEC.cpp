@@ -9,7 +9,7 @@
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/16
+    Last Update : 2023/5/17
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -38,17 +38,20 @@
     Nothing
 */
 /************************************************** Functions *********************************************************/
+/* Set address of device that use in connection */
 Status<IEC::Messages>* ClientIEC::SetAddress(char *Address) {
+    /* Disconnect if current address diffrent with old address */
     if(strcmp(Address, _Address) != 0) {
             DisConnect();
     }
-
+    /* Replace address */
     strcpy(_Address, Address);
 
     status.Set(Messages::Success);
     return &status;
 }  
 /*--------------------------------------------------------------------------------------------------------------------*/
+/* Command to connect IEC */
 Status<IEC::Messages>* ClientIEC::Connect() {
 
     uint8_t Data[1024];
@@ -90,7 +93,9 @@ Status<IEC::Messages>* ClientIEC::Connect() {
     return &status;
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
+/* Command to execute data to IEC */
 Status<IEC::Messages>* ClientIEC::Execute(char *Data, uint32_t Length) {
+    /* Send connect command if IEC is not connected */
     if(state.Get() != States::Connected) {
         if(Connect()->Get() != Messages::Success) {
             return &status;
@@ -108,6 +113,7 @@ Status<IEC::Messages>* ClientIEC::Execute(char *Data, uint32_t Length) {
     return &status;
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
+/* Command to disconnect IEC */
 Status<IEC::Messages>* ClientIEC::DisConnect() {
 
     if(state.Get() == States::DisConnected) {

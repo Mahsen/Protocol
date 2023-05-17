@@ -4,14 +4,14 @@
 /*
     File : Serial.hpp
     Programmer : Mohammad Lotfi
-    Used : Using
-    Design Pattern : Nothing
+    Used : Using send and receive to comport windows
+    Design Pattern : Singleton
     Types of memory : Heap & Stack
     Total Tread : Nothing
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/13
+    Last Update : 2023/5/17
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -49,7 +49,9 @@ class Serial : public Media {
 
         /* Instance for single use */
         static Serial *_Instance;
+        /* Use serial com port windows */
         HANDLE _Port;
+        /* Initialize private variable */
         Serial() {
             _Port = nullptr;
             _Instance = nullptr; 

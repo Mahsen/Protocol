@@ -5,13 +5,13 @@
     File : Status.hpp
     Programmer : Mohammad Lotfi
     Used : Use header
-    Design Pattern : Nothing
+    Design Pattern : Template
     Types of memory : Nothing
     Total Tread : Nothing
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/13
+    Last Update : 2023/5/17
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -58,9 +58,6 @@ class Status {
         T_Message Get() {        
             return this->_Message;
         }
-
-        /* Show current message on console */
-        //virtual void ShowMessage() = 0;
 
 };
 /************************************************** Functions *********************************************************/

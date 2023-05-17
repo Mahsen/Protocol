@@ -5,13 +5,13 @@
     File : States.hpp
     Programmer : Mohammad Lotfi
     Used : Use header
-    Design Pattern : Nothing
+    Design Pattern : Template
     Types of memory : Nothing
     Total Tread : Nothing
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/16
+    Last Update : 2023/5/17
 */
 /************************************************** Warnings **********************************************************/
 /*
