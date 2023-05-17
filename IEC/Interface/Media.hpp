@@ -48,6 +48,10 @@ class Media {
         virtual bool Send(uint8_t *Message, uint32_t Length) = 0;
         /* This function for receive data*/
         virtual bool Receive(uint8_t *Message, uint32_t *Length) = 0;
+        /* This function clear ring buffer media */
+        virtual bool Clear() = 0;
+        /* This function reset means close and then open for reinit media */
+        virtual bool Reset() = 0;
         /* This function close media */
         virtual bool Close() = 0;
 };
