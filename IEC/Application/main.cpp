@@ -53,9 +53,9 @@ int main() {
     //IEC::Messages::Fault;
     _ClientIEC->SetAddress((char*)"01");
     _ClientIEC->Connect();
-    _ClientIEC->Execute((char*)"11111", 5);
+    _ClientIEC->Execute((char*)"11111");
     _ClientIEC->SetAddress((char*)"02");
-    _ClientIEC->Execute((char*)"22222", 5);
+    _ClientIEC->Execute((char*)"22222");
     _ClientIEC->DisConnect();
 
     cout << "Finish ----------------------- " << endl;

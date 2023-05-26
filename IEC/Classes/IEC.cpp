@@ -206,12 +206,12 @@ Status<IEC::Messages>* ClientIEC::Execute(char *Data, void (*CallBack)(char *Dat
 	pch = NULL;
 	etx = NULL;
 	
-	pch = strtok((char*)Data, IEC_CHAR_ETX);	
+	pch = strtok((char*)Data, (char*)IEC_CHAR_ETX);	
 	etx = pch;
 	
 	if(etx == NULL)
 	{
-		pch = strtok((char*)Data, IEC_CHAR_EOT);
+		pch = strtok((char*)Data, (char*)IEC_CHAR_EOT);
 	}
 
 	while(pch)
@@ -259,12 +259,12 @@ Status<IEC::Messages>* ClientIEC::Execute(char *Data, void (*CallBack)(char *Dat
 		pch = NULL;
 		etx = NULL;
 		
-		pch = strtok(NULL, IEC_CHAR_ETX);	
+		pch = strtok(NULL, (char*)IEC_CHAR_ETX);	
 		etx = pch;
 		
 		if(etx == NULL)
 		{
-			pch = strtok(NULL, IEC_CHAR_EOT);
+			pch = strtok(NULL, (char*)IEC_CHAR_EOT);
 		}
 
 	}

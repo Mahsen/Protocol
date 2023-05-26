@@ -31,12 +31,12 @@
 /* State class is there */
 #include "../Interface/State.hpp"
 /************************************************** Defineds **********************************************************/
-#define IEC_CHAR_SOH ""
-#define IEC_CHAR_STX ""
-#define IEC_CHAR_ETX ""
-#define IEC_CHAR_EOT ""
-#define IEC_CHAR_ACK ""
-#define IEC_CHAR_NAK ""
+#define IEC_CHAR_SOH ''
+#define IEC_CHAR_STX ''
+#define IEC_CHAR_ETX ''
+#define IEC_CHAR_EOT ''
+#define IEC_CHAR_ACK ''
+#define IEC_CHAR_NAK ''
 /************************************************** Names *************************************************************/
 /* Using std */
 using namespace std;
@@ -93,7 +93,7 @@ class IEC {
 /*--------------------------------------------------------------------------------------------------------------------*/
 class ClientIEC : private IEC {
     public:
-        ClientIEC(Media* P_Media, void (*P_Wait)(uint32_t)) : IEC(P_Media, P_Wait) { SetAddress(""); SetMode('0'); };
+        ClientIEC(Media* P_Media, void (*P_Wait)(uint32_t)) : IEC(P_Media, P_Wait) { SetAddress((char*)""); SetMode('0'); };
 
         Status<Messages>* SetAddress(char *Address);
         Status<Messages>* SetMode(char Mode);
@@ -101,8 +101,8 @@ class ClientIEC : private IEC {
         Status<Messages>* Connect();
         Status<Messages>* Connect(char *Address);
         Status<Messages>* Connect(char *Address, char Mode);
-        Status<Messages>* Execute(char *Data, uint32_t Length, void (*CallBack)(char *Data, uint32_t Length));
-        Status<Messages>* Execute(char *Data, uint32_t Length);
+        Status<Messages>* Execute(char *Data, void (*CallBack)(char *Data, uint32_t Length));
+        Status<Messages>* Execute(char *Data);
         Status<Messages>* DisConnect();
 };
 /************************************************** Functions *********************************************************/

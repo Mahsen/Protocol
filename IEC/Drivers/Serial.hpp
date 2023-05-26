@@ -11,7 +11,7 @@
     Site : https://www.mahsen.ir
     Tel : +989124662703
     Email : info@mahsen.ir
-    Last Update : 2023/5/17
+    Last Update : 2023/5/26
 */
 /************************************************** Warnings **********************************************************/
 /*
@@ -83,6 +83,8 @@ class Serial : public Media {
         bool Update(uint32_t Speed) override;
         bool Send(uint8_t *Message, uint32_t Length) override;
         bool Receive(uint8_t *Message, uint32_t *Length) override;
+        bool Clear() override;
+        bool Reset() override;
         bool Close() override;
 };
 /************************************************** Functions *********************************************************/
