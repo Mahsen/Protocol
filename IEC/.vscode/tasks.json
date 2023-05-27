@@ -8,8 +8,8 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "${workspaceFolder}\\Classes\\*.cpp",
-                "${workspaceFolder}\\Drivers\\*.cpp",
+                "${workspaceFolder}\\Classes\\IEC.cpp",
+                "${workspaceFolder}\\Drivers\\Serial.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
